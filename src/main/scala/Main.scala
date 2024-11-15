@@ -1,30 +1,22 @@
 package fr.umontpellier.ig5
-import org.apache.spark.sql.SparkSession
 
-// https://drive.google.com/drive/folders/12nE-4ffAP9RZD7VkEIY4Ett_9KTKyhv5
+import org.apache.spark.sql.SparkSession
 
 object Main {
 
   def main(args: Array[String]): Unit = {
+    // Initialize Spark session
     val spark = SparkSession.builder()
-      .appName("LineCounter")
-      .master("local[*]")
+      .appName("SparkExercises")
+      .master("local[*]") // Use all available cores
       .getOrCreate()
 
-    val filePath = "data/README.md"
-    try {
-      val lineCount = countLines(spark, filePath)
-      println(s"Number of lines in $filePath: $lineCount")
-    } catch {
-      case e: Exception => println(s"An error occurred: ${e.getMessage}")
-    } finally {
-      spark.stop()
-    }
-  }
+    val exercise1CSVPath = "data/stackoverflow.csv"
+    val exercise2CSVPath = "data/exercise2.csv"
 
-  private def countLines(spark: SparkSession, filePath: String): Long = {
-    // Lecture du fichier en tant que RDD
-    val lines = spark.sparkContext.textFile(filePath)
-    lines.count()  // Compte le nombre de lignes
+    // Exercise1.execute(spark, exercise1CSVPath)
+    Exercise2.execute(spark, exercise2CSVPath)
+
+    spark.stop()
   }
 }
